@@ -11,6 +11,7 @@ namespace GOTHIC_ENGINE {
   }
   
   void Game_Init() {
+      munitionInfo.Init();
   }
 
   void Game_Exit() {

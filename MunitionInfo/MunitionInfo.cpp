@@ -10,7 +10,6 @@ namespace GOTHIC_ENGINE {
 		mutionColorInfo = zCOLOR(munitionColorR, munitionColorG, munitionColorB);
 		munitionPosX = zoptions->ReadInt("ShowMunitionInfo", "MunitionPosX", 800);
 		munitionPosY = zoptions->ReadInt("ShowMunitionInfo", "MunitionPosY", 100);
-
 	}
 
 
@@ -36,10 +35,12 @@ namespace GOTHIC_ENGINE {
 		if (!rangeWeapon)
 			return;
 
-		int rangeWeaponAmount = -1;
+
 		zCListSort<oCItem>& items = player->inventory2.inventory;
 
 		int rangeMunition = rangeWeapon->munition;
+		
+		int rangeWeaponAmount = 0;
 		string munitionName = "";
 
 		for (int i = 0; i < items.GetNumInList(); i++) {
@@ -50,13 +51,18 @@ namespace GOTHIC_ENGINE {
 			}
 		}
 
-		if (rangeWeaponAmount != -1) {
-			string ammoDescription = string::Combine("%s: %u", munitionName, rangeWeaponAmount);
-			zCOLOR lastColor = screen->GetColor();
-			screen->SetFontColor(mutionColorInfo);
-			screen->Print(munitionPosX, munitionPosY, ammoDescription);
-			screen->SetFontColor(lastColor);
+		string ammoDescription; 
+		if (rangeWeaponAmount != 0) {			
+			ammoDescription = string::Combine("%s: %u", munitionName, rangeWeaponAmount);
+		} else {
+			ammoDescription = rangeWeapon->HasFlag(ITM_FLAG_CROSSBOW) ? "Нет болтов" : "Нет стрел";
 		}
+
+		zCOLOR lastColor = screen->GetColor();
+		screen->SetFontColor(mutionColorInfo);
+		screen->Print(munitionPosX, munitionPosY, ammoDescription);
+		screen->SetFontColor(lastColor);
+
 	}
 
 }
