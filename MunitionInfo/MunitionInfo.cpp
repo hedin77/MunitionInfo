@@ -10,6 +10,7 @@ namespace GOTHIC_ENGINE {
 		mutionColorInfo = zCOLOR(munitionColorR, munitionColorG, munitionColorB);
 		munitionPosX = zoptions->ReadInt("ShowMunitionInfo", "MunitionPosX", 800);
 		munitionPosY = zoptions->ReadInt("ShowMunitionInfo", "MunitionPosY", 100);
+
 	}
 
 
