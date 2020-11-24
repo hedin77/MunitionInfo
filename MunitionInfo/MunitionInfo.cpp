@@ -24,7 +24,6 @@ namespace GOTHIC_ENGINE {
 		oCItem* weapon_ = player->GetWeapon();
 		oCItem* rangeWeapon = player->GetEquippedRangedWeapon();
 
-
 		if (player->IsDead())
 			return;
 
@@ -51,17 +50,12 @@ namespace GOTHIC_ENGINE {
 			}
 		}
 
-		string ammoDescription; 
 		if (rangeWeaponAmount != 0) {			
-			ammoDescription = string::Combine("%s: %u", munitionName, rangeWeaponAmount);
-		} else {
-			ammoDescription = rangeWeapon->HasFlag(ITM_FLAG_CROSSBOW) ? "Нет болтов" : "Нет стрел";
+			zCOLOR lastColor = screen->GetColor();
+			screen->SetFontColor(mutionColorInfo);
+			screen->Print(munitionPosX, munitionPosY, string::Combine("%s: %u", munitionName, rangeWeaponAmount));
+			screen->SetFontColor(lastColor);
 		}
-
-		zCOLOR lastColor = screen->GetColor();
-		screen->SetFontColor(mutionColorInfo);
-		screen->Print(munitionPosX, munitionPosY, ammoDescription);
-		screen->SetFontColor(lastColor);
 
 	}
 

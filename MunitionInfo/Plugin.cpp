@@ -21,10 +21,11 @@ namespace GOTHIC_ENGINE {
   }
 
   void Game_Loop() {
-      munitionInfo.MunitionLoop();
+      
   }
 
   void Game_PostLoop() {
+      munitionInfo.MunitionLoop();
   }
 
   void Game_MenuLoop() {
