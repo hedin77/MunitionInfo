@@ -43,8 +43,7 @@ namespace GOTHIC_ENGINE {
   void LoadBegin() {
   }
 
-  void LoadEnd() {
-      munitionInfo.loadPlayerInfo();
+  void LoadEnd() {    
   }
 
   void Game_LoadBegin_NewGame() {

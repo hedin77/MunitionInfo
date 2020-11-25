@@ -13,50 +13,27 @@ namespace GOTHIC_ENGINE {
 	}
 
 
-	void MunitionInfo::loadPlayerInfo() {
-		oCNpc* player = Gothic::Entities::Player;
-		player->inventory2.UnpackAllItems();
-
-	}
-
 	void MunitionInfo::MunitionLoop() {
-		oCNpc* player = Gothic::Entities::Player;
-		oCItem* weapon_ = player->GetWeapon();
-		oCItem* rangeWeapon = player->GetEquippedRangedWeapon();
-
-		if (player->IsDead())
+		if (!player || player->attribute[NPC_ATR_HITPOINTS] <= 0)
 			return;
 
-		if (!rangeWeapon && weapon_ && (weapon_->HasFlag(ITM_FLAG_BOW) || weapon_->HasFlag(ITM_FLAG_CROSSBOW))) {
-			rangeWeapon = weapon_;
-		}
+		oCItem* gun = player->GetEquippedRangedWeapon();
 
-		if (!rangeWeapon)
+		if (!gun)
+			gun = player->GetWeapon();
+
+		if (!gun || ((gun->mainflag & ITM_CAT_FF) != ITM_CAT_FF) || gun->munition <= 0)
 			return;
 
+		player->inventory2.UnpackAllItems();
+		oCItem* munition = player->IsInInv(gun->munition, 1);
 
-		zCListSort<oCItem>& items = player->inventory2.inventory;
+		zSTRING text = munition ? (munition->description + Z": " + Z munition->amount) : Z"No munition available";
 
-		int rangeMunition = rangeWeapon->munition;
-		
-		int rangeWeaponAmount = 0;
-		string munitionName = "";
-
-		for (int i = 0; i < items.GetNumInList(); i++) {
-			oCItem* it = items.Get(i);
-			if (it->GetInstance() == rangeMunition) {
-				rangeWeaponAmount = it->amount;
-				munitionName = it->GetDescription().ToChar();
-			}
-		}
-
-		if (rangeWeaponAmount != 0) {			
-			zCOLOR lastColor = screen->GetColor();
-			screen->SetFontColor(mutionColorInfo);
-			screen->Print(munitionPosX, munitionPosY, string::Combine("%s: %u", munitionName, rangeWeaponAmount));
-			screen->SetFontColor(lastColor);
-		}
-
+		zCOLOR oldColor = screen->fontColor;
+		screen->SetFontColor(mutionColorInfo);
+		screen->Print(munitionPosX, munitionPosY, text);
+		screen->SetFontColor(oldColor);
 	}
 
 }
